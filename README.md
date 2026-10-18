@@ -11,7 +11,7 @@
 
 ---
 
-## ⚡ Executive Summary & System Highlights
+##  Executive Summary & System Highlights
 
 **EventRight** is an asynchronous, event-driven microservices platform engineered to handle high-concurrency ticket reservations, payment processing, and inventory state transitions with decoupled message streaming and transactional consistency.
 
@@ -22,7 +22,7 @@
 
 ---
 
-## 🏛️ Microservice Architecture & Event Flow
+##  Microservice Architecture & Event Flow
 
 ```
                                   +-----------------------+
@@ -70,7 +70,7 @@
 
 ---
 
-## 📦 Service Topology & Portfolio Breakdown
+##  Service Topology & Portfolio Breakdown
 
 | Service | Port | Description | Stack / Tech |
 | :--- | :--- | :--- | :--- |
@@ -83,22 +83,8 @@
 | **`payment-service`** | Dynamic | Asynchronous transaction settlement; publishes `payment-events` upon confirmation | Spring Kafka Consumer/Producer, JPA |
 | **`notification-service`** | Dynamic | Event-driven dispatch service consuming payment confirmations | Spring Kafka Consumer, JavaMail/SMS |
 
----
 
-## 🚀 Key Architectural Decisions & Interview Talking Points
-
-### 1. Why Event-Driven Architecture with Kafka instead of Direct REST calls?
-> *"Direct synchronous HTTP calls between Booking, Payment, and Notification create tight temporal coupling. If Payment Service experiences a P99 latency spike or Notification Service is down, the Booking API blocks and eventually times out for the end-user. By offloading booking confirmations to an **Apache Kafka topic (`booking-events`)**, Booking Service responds to the user in sub-50ms, while Payment and Notification consume events at their own processing rate."*
-
-### 2. How are Overbooking Race Conditions Prevented?
-> *"Before a booking record is transitioned to `CONFIRMED`, `BookingService` executes an atomic seat verification and decrement operation against `EventService`. If capacity is insufficient, the transaction terminates immediately before publishing to Kafka, preventing phantom bookings."*
-
-### 3. Why Eureka + Spring Cloud Gateway?
-> *"Rather than hardcoding IP addresses or container hosts, services register ephemeral instances with Eureka upon bootstrap. The Spring Cloud Gateway queries Eureka for active instances, automatically routing traffic to healthy nodes and performing client-side load balancing."*
-
----
-
-## 🛠️ Local Development & Running the System
+##  Local Development & Running the System
 
 ### 1. Prerequisites
 * **Java 21 or 25** (OpenJDK)
@@ -133,15 +119,4 @@ cd ../notification-service && ./mvnw spring-boot:run
 cd ../user-service && ./mvnw spring-boot:run
 ```
 
----
 
-## 📜 Resume & Portfolio Highlights (ATS-Optimized)
-
-* **Architected an event-driven microservices ticketing platform with 8 Spring Boot/Cloud services handling asynchronous booking pipelines via Apache Kafka, reducing synchronous API blocking by >80%.**
-* **Implemented dynamic service discovery and edge routing with Netflix Eureka and Spring Cloud Gateway, enabling client-side load balancing and zero-downtime service registration.**
-* **Designed an asynchronous saga-style transaction flow across booking, payment, and notification domains, ensuring eventual data consistency and eliminating distributed deadlocks.**
-
----
-
-## 📜 License
-MIT License. Built for distributed systems, backend engineering, and high-concurrency event platforms.
